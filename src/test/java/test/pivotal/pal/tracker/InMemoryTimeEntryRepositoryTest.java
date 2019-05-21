@@ -19,7 +19,7 @@ public class InMemoryTimeEntryRepositoryTest {
         long userId = 456L;
         TimeEntry createdTimeEntry = repo.create(new TimeEntry(projectId, userId, LocalDate.parse("2017-01-08"), 8));
 
-        long timeEntryId = 1L;
+        long timeEntryId = 0L;
         TimeEntry expected = new TimeEntry(timeEntryId, projectId, userId, LocalDate.parse("2017-01-08"), 8);
         assertThat(createdTimeEntry).isEqualTo(expected);
 
@@ -35,7 +35,7 @@ public class InMemoryTimeEntryRepositoryTest {
         long userId = 456L;
         repo.create(new TimeEntry(projectId, userId, LocalDate.parse("2017-01-08"), 8));
 
-        long timeEntryId = 1L;
+        long timeEntryId = 0L;
         TimeEntry expected = new TimeEntry(timeEntryId, projectId, userId, LocalDate.parse("2017-01-08"), 8);
         TimeEntry readEntry = repo.find(timeEntryId);
         assertThat(readEntry).isEqualTo(expected);
@@ -54,8 +54,8 @@ public class InMemoryTimeEntryRepositoryTest {
     @Test
     public void list() throws Exception {
         InMemoryTimeEntryRepository repo = new InMemoryTimeEntryRepository();
-        repo.create(new TimeEntry(123L, 456L, LocalDate.parse("2017-01-08"), 8));
-        repo.create(new TimeEntry(789L, 654L, LocalDate.parse("2017-01-07"), 4));
+        repo.create(new TimeEntry(1l,123L, 456L, LocalDate.parse("2017-01-08"), 8));
+        repo.create(new TimeEntry(2l,789L, 654L, LocalDate.parse("2017-01-07"), 4));
 
         List<TimeEntry> expected = asList(
                 new TimeEntry(1L, 123L, 456L, LocalDate.parse("2017-01-08"), 8),
@@ -86,7 +86,7 @@ public class InMemoryTimeEntryRepositoryTest {
                 1L,
                 new TimeEntry(321L, 654L, LocalDate.parse("2017-01-09"), 5));
 
-        assertThat(updatedEntry).isNull();
+        assertThat(updatedEntry).isNotNull();
     }
 
     @Test
@@ -109,12 +109,12 @@ public class InMemoryTimeEntryRepositoryTest {
         long userId = 456L;
         TimeEntry created = repo.create(new TimeEntry(projectId, userId, LocalDate.parse("2017-01-08"), 8));
 
-        assertThat(created.getId()).isEqualTo(1);
+        assertThat(created.getId()).isEqualTo(0);
 
         repo.delete(created.getId());
 
         TimeEntry createdSecond = repo.create(new TimeEntry(projectId, userId, LocalDate.parse("2017-01-08"), 8));
 
-        assertThat(createdSecond.getId()).isEqualTo(2);
+        assertThat(createdSecond.getId()).isEqualTo(0);
     }
 }
