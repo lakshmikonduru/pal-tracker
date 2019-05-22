@@ -15,16 +15,17 @@ public class TimeEntryController {
     }
     @PostMapping("/time-entries")
     public ResponseEntity create(@RequestBody TimeEntry timeEntryToCreate){
-        timeEntryRepository.create(timeEntryToCreate);
-        return new ResponseEntity(timeEntryToCreate,HttpStatus.CREATED);
+        TimeEntry newTimeEntryTocreate = timeEntryRepository.create(timeEntryToCreate);
+        return new ResponseEntity(newTimeEntryTocreate,HttpStatus.CREATED);
     }
     @GetMapping("/time-entries/{id}")
     public ResponseEntity<TimeEntry> read(@PathVariable long id){
         TimeEntry timeEntry = timeEntryRepository.find(id);
-        if ( null == timeEntry ){
-            return  new ResponseEntity(HttpStatus.NOT_FOUND);
+        if ( null != timeEntry ){
+            return  new ResponseEntity(timeEntry,HttpStatus.OK);
+        } else {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-        return  new ResponseEntity(timeEntry,HttpStatus.OK);
     }
     @GetMapping("/time-entries")
     public ResponseEntity<List<TimeEntry>> list(){
@@ -34,20 +35,17 @@ public class TimeEntryController {
 
     @PutMapping("/time-entries/{id}")
     public ResponseEntity update(@PathVariable long id,@RequestBody TimeEntry timeEntryToUpdate){
-        timeEntryRepository.update(id,timeEntryToUpdate);
-        if ( null == timeEntryToUpdate.getDate()){
+        TimeEntry updatedTimeEntry = timeEntryRepository.update(id,timeEntryToUpdate);
+        if ( null != updatedTimeEntry){
+            return new ResponseEntity(updatedTimeEntry,HttpStatus.OK);
+        } else {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-
-        return new ResponseEntity(timeEntryRepository.find(id),HttpStatus.OK);
     }
 
     @DeleteMapping("/time-entries/{id}")
     public ResponseEntity delete(@PathVariable long id){
         timeEntryRepository.delete(id);
-        if ( null == timeEntryRepository.find(id)){
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity(timeEntryRepository.find(id),HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

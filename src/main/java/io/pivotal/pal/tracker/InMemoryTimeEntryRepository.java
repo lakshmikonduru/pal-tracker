@@ -8,12 +8,12 @@ import java.util.Map;
 public class InMemoryTimeEntryRepository implements TimeEntryRepository {
 
     Map<Long, TimeEntry> timeEntries = new HashMap<>();
-
+    long defaultId = 1L;
     public TimeEntry create(TimeEntry timeEntry){
-        if ( null != timeEntry ) {
-            timeEntries.put(timeEntry.getId(), timeEntry);
-        }
-        return timeEntry;
+        Long id = defaultId++;
+        TimeEntry timeEntryToCreate = new TimeEntry(id,timeEntry.getProjectId(),timeEntry.getUserId(),timeEntry.getDate(),timeEntry.getHours());
+        timeEntries.put(id, timeEntryToCreate);
+        return timeEntryToCreate;
     }
 
     public TimeEntry find(long id){
@@ -29,7 +29,11 @@ public class InMemoryTimeEntryRepository implements TimeEntryRepository {
     }
 
     public TimeEntry update(long id, TimeEntry timeEntry){
-        timeEntries.put(id,timeEntry);
+        if(null == find(id)){
+            return null;
+        }
+        TimeEntry timeEntryToCreate = new TimeEntry(id,timeEntry.getProjectId(),timeEntry.getUserId(),timeEntry.getDate(),timeEntry.getHours());
+        timeEntries.put(id,timeEntryToCreate);
         return timeEntries.get(id);
     }
 
