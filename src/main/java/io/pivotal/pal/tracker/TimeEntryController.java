@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
+@RequestMapping("/time-entries")
 public class TimeEntryController {
 
     private TimeEntryRepository timeEntryRepository;
@@ -13,12 +14,12 @@ public class TimeEntryController {
     public TimeEntryController(TimeEntryRepository timeEntryRepository) {
         this.timeEntryRepository = timeEntryRepository;
     }
-    @PostMapping("/time-entries")
+    @PostMapping
     public ResponseEntity create(@RequestBody TimeEntry timeEntryToCreate){
         TimeEntry newTimeEntryTocreate = timeEntryRepository.create(timeEntryToCreate);
         return new ResponseEntity(newTimeEntryTocreate,HttpStatus.CREATED);
     }
-    @GetMapping("/time-entries/{id}")
+    @GetMapping("{id}")
     public ResponseEntity<TimeEntry> read(@PathVariable long id){
         TimeEntry timeEntry = timeEntryRepository.find(id);
         if ( null != timeEntry ){
@@ -27,13 +28,13 @@ public class TimeEntryController {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
     }
-    @GetMapping("/time-entries")
+    @GetMapping
     public ResponseEntity<List<TimeEntry>> list(){
         List<TimeEntry> timeEntryList = timeEntryRepository.list();
         return  new ResponseEntity(timeEntryList,HttpStatus.OK);
     }
 
-    @PutMapping("/time-entries/{id}")
+    @PutMapping("{id}")
     public ResponseEntity update(@PathVariable long id,@RequestBody TimeEntry timeEntryToUpdate){
         TimeEntry updatedTimeEntry = timeEntryRepository.update(id,timeEntryToUpdate);
         if ( null != updatedTimeEntry){
@@ -43,7 +44,7 @@ public class TimeEntryController {
         }
     }
 
-    @DeleteMapping("/time-entries/{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity delete(@PathVariable long id){
         timeEntryRepository.delete(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
