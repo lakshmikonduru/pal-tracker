@@ -32,6 +32,7 @@ jobs:
     - stage: deploy to cf
       language: java
       before_install:
+        - chmod 777 gradlew
         - wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -
         - echo "deb https://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list
         - sudo apt-get update
@@ -44,7 +45,7 @@ jobs:
       before_deploy:
         - echo "Deploying $RELEASE_TAG to Cloud Foundry"
       before_script:
-        - chmod 777 gradlew
+        - chmod 777 scripts/migrate-databases.sh
         - cf login -a $CF_API_URL -u $CF_USERNAME -p $CF_PASSWORD -o $CF_ORG -s $CF_SPACE
         - scripts/migrate-databases.sh pal-tracker .
       deploy:
