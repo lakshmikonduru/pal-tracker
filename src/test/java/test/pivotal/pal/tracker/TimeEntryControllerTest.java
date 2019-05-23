@@ -105,7 +105,7 @@ public class TimeEntryControllerTest {
 
         verify(timeEntryRepository).update(timeEntryId, expected);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        //assertThat(response.getBody()).isEqualTo(expected);
+        assertThat(response.getBody()).isEqualTo(expected);
     }
 
     @Test
