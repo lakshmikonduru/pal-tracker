@@ -17,6 +17,7 @@ buildscript {
 plugins {
     id "java"
     id "org.flywaydb.flyway" version "5.0.5"
+    //id "com.gorylenko.gradle-git-properties" version "1.5.1"
 }
 
 apply plugin: 'org.springframework.boot'
@@ -31,6 +32,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-jdbc:$springBootVersion")
     compile("mysql:mysql-connector-java:8.0.13")
     compile("org.springframework.boot:spring-boot-starter-actuator:$springBootVersion")
+    compile('io.micrometer:micrometer-registry-prometheus:latest.release')
     testCompile("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
     testCompile("org.mockito:mockito-core:2.23.4")
 
